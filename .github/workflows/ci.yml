@@ -4,45 +4,39 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build-test-package-deploy:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
+    - name: Build Application Artifact
+      run: |
+        chmod +x build.sh
+        ./build.sh
 
-      - name: Build Artifact
-        run: bash build.sh
+    - name: Run Unit Tests
+      run: |
+        pip install pytest
+        pytest
 
-      - name: Run Unit Tests
-        run: |
-          pip install pytest
-          pytest -q
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifact
+        path: build/artifact.zip
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-artifact
-          path: build/app.zip
+    - name: Simulated Deployment
+      env:
+        DEPLOY_API_KEY: ${{ secrets.DEPLOY_API_KEY }}
+      run: |
+        echo "Downloading Artifact..."
+        mkdir deploy
+        echo "Deploying..."
+        echo "Deployment Using API Key: $DEPLOY_API_KEY"
+        echo "Deployment Completed Successfully."
 
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app-artifact
-          path: deploy/
-
-      - name: Simulated Deploy
-        env:
-          DEPLOY_API_KEY: ${{ secrets.DEPLOY_API_KEY }}
-        run: echo "Deploying using API Key: $DEPLOY_API_KEY"
