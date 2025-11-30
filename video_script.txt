@@ -1,0 +1,31 @@
+Video Presentation Script (3–5 minutes)
+
+1. Introduction (20s)
+   - "Hello, I'm Suborna. This video demonstrates my CI/CD pipeline for the SE 103 assignment."
+
+2. Repository Overview (30s)
+   - Show GitHub repository root with project files: src/, tests/, build.sh, .github/workflows/pipeline.yml
+
+3. Source & Tests (40s)
+   - Open src/app.py and tests/test_app.py. Explain the function and the unit test.
+
+4. Build Script (30s)
+   - Show build.sh and explain that it packages the source into build/artifact.zip.
+
+5. Workflow Explanation (60s)
+   - Open pipeline.yml and walk through five stages:
+     - Checkout Source
+     - Build
+     - Test
+     - Upload Artifact
+     - Simulated Deploy
+   - Explain that DEPLOY_API_KEY is stored in GitHub Secrets and is masked in logs.
+
+6. Pipeline Run Demo (40s)
+   - Show the Actions run, confirm all steps passed, show artifacts, and show masked secret in Simulated Deploy logs.
+
+7. Artifact Reuse Explanation (20s)
+   - Read the artifact_reuse.md paragraph and explain "Build Once, Deploy Many."
+
+8. Conclusion (10s)
+   - "Thank you. This completes the demonstration."

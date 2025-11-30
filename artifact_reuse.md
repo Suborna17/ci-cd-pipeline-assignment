@@ -1,0 +1,3 @@
+Artifact Reuse Explanation (Build Once, Deploy Many)
+
+In this pipeline, the Build stage produces a single, immutable artifact: `build/artifact.zip`. The artifact is then uploaded to GitHub Actions' artifact storage using the `actions/upload-artifact` action. The Simulated Deploy stage does not rebuild the source; instead, it uses the exact same artifact previously uploaded. This enforces the DevOps principle "Build Once, Deploy Many", ensuring that the artifact tested by the pipeline is the identical artifact used for deployment, preventing discrepancies between build and deployment environments.
