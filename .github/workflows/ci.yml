@@ -11,25 +11,31 @@ jobs:
 
     steps:
 
+    # ---------------- Source Stage ----------------
     - name: Checkout Source Code
       uses: actions/checkout@v4
 
+    # ---------------- Build Stage ----------------
     - name: Build Application Artifact
       run: |
         chmod +x build.sh
         ./build.sh
 
+    # ---------------- Test Stage ----------------
     - name: Run Unit Tests
       run: |
         pip install pytest
-        pytest
+        # FIX: Using 'python -m pytest' adds the current directory to sys.path
+        python -m pytest
 
+    # ---------------- Artifact Upload Stage ----------------
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
         name: build-artifact
         path: build/artifact.zip
 
+    # ---------------- Simulated Deploy Stage ----------------
     - name: Simulated Deployment
       env:
         DEPLOY_API_KEY: ${{ secrets.DEPLOY_API_KEY }}
@@ -39,4 +45,3 @@ jobs:
         echo "Deploying..."
         echo "Deployment Using API Key: $DEPLOY_API_KEY"
         echo "Deployment Completed Successfully."
-
